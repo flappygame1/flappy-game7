@@ -645,3 +645,58 @@ function drawBird() {
   );
 
   ctx.fill();
+  ctx.fillStyle = '#ff6b35';
+
+  ctx.beginPath();
+
+  ctx.moveTo(14, 0);
+  ctx.lineTo(24, -4);
+  ctx.lineTo(24, 4);
+  ctx.closePath();
+
+  ctx.fill();
+
+  ctx.restore();
+}
+
+
+function draw() {
+
+  ctx.clearRect(0, 0, W, H);
+
+  drawBackgroundClouds();
+  drawPipes();
+  drawGround();
+  drawBird();
+
+}
+
+
+function gameLoop() {
+
+  update();
+  draw();
+
+  requestAnimationFrame(gameLoop);
+
+}
+
+
+overlay.addEventListener('click', flap);
+
+canvas.addEventListener('click', flap);
+
+document.addEventListener('keydown', function(event) {
+
+  if (event.code === 'Space') {
+
+    event.preventDefault();
+
+    flap();
+
+  }
+
+});
+
+
+gameLoop();
