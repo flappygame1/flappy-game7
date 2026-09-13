@@ -700,3 +700,87 @@ document.addEventListener('keydown', function(event) {
 
 
 gameLoop();
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+const overlay = document.getElementById('overlay');
+const scoreDisplay = document.getElementById('scoreDisplay');
+
+const W = canvas.width;
+const H = canvas.height;
+
+let state = 'start';
+let frame = 0;
+let score = 0;
+
+let best = Number(localStorage.getItem('flappyBest') || 0) || 0;
+
+const bird = {
+  x: 90,
+  y: H / 2,
+  radius: 14,
+  velocity: 0,
+  gravity: 0.5,
+  flapStrength: -8.5,
+  rotation: 0
+};
+
+const pipeWidth = 60;
+const pipeGap = 150;
+const pipeSpeed = 2.6;
+
+let pipes = [];
+let pipeTimer = 0;
+const pipeInterval = 95;
+
+const groundHeight = 80;
+let groundOffset = 0;
+
+
+function resetGame() {
+  bird.y = H / 2;
+  bird.velocity = 0;
+  bird.rotation = 0;
+
+  pipes = [];
+  pipeTimer = 0;
+  score = 0;
+  frame = 0;
+
+  scoreDisplay.textContent = '0';
+}
+
+
+function flap() {
+
+  if (state === 'start') {
+
+    resetGame();
+
+    state = 'playing';
+
+    overlay.style.display = 'none';
+
+    bird.velocity = bird.flapStrength;
+
+  } else if (state === 'playing') {
+
+    bird.velocity = bird.flapStrength;
+
+  } else if (state === 'gameover') {
+
+    resetGame();
+
+    state = 'playing';
+
+    overlay.style.display = 'none';
+
+    bird.velocity = bird.flapStrength;
+  }
+}
+
+
+function spawnPipe() {
+
+  const minTop = 60;
+  const maxTop =
